@@ -103,19 +103,18 @@ def get_available_letters(letters_guessed):
       yet been guessed.
     '''
 
-    not_guessed = ""
-    alphabet = "abcdefghijklmnopqrstuvwxyz"
-    list(alphabet)
-    for letter in alphabet:
+    import string
+    alphabet = string.ascii_lowercase
+    alphabet2 = list(alphabet)
+    not_guessed = []
+    for letter in alphabet2:
         for letter2 in letters_guessed:
             if letter == letter2:
                 break
         else:
             not_guessed += letter
-    return not_guessed
-
-
-# print(get_available_letters(["a", "b"]))
+    not_guessed2 = "".join(not_guessed)
+    return not_guessed2
 
 
 def hangman(secret_word):
