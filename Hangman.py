@@ -59,13 +59,15 @@ def is_word_guessed(secret_word, letters_guessed):
     returns: boolean, True if all the letters of secret_word are in letters_guessed;
       False otherwise
     '''
-    letters_found = ""
+    confirmed_letters = []
     for char1 in secret_word:
         for char2 in letters_guessed:
             if char1 == char2:
-                letters_found += char1
+                confirmed_letters += char2
                 break
-    return secret_word == letters_found
+    str_confirmed_letters = "".join(confirmed_letters)
+    return secret_word == str_confirmed_letters
+
 
 
 def get_guessed_word(secret_word, letters_guessed):
@@ -75,19 +77,23 @@ def get_guessed_word(secret_word, letters_guessed):
     returns: string, comprised of letters, underscores (_), and spaces that represents
       which letters in secret_word have been guessed so far.
     '''
-    guessed_word = ""
-    # obtains letters which have been guessed
+    guessed_word = []
     for char1 in secret_word:
         for char2 in letters_guessed:
-            if char1 == char2:
-                guessed_word += char1 + " "
+            if char1 == char2 and char1 == secret_word[-1]:
+                guessed_word += char2
+                break
+            elif char1 == char2:
+                guessed_word += char2 + " "
                 break
         else:
-            guessed_word += "_ "            # note that for the string guessed_word, position -1 = " "
-    return guessed_word
+            if char1 == secret_word[-1]:
+                guessed_word += "_"
+            else:
+                guessed_word += "_ "
 
-
-# print(get_guessed_word("apple", ["a", "b", "e"]))
+    guessed_word2 = "".join(guessed_word)
+    return guessed_word2
 
 
 def get_available_letters(letters_guessed):
@@ -255,7 +261,7 @@ if __name__ == "__main__":
     # uncomment the following two lines.
 
     secret_word = choose_word(wordlist)
-    hangman(secret_word)
+    #hangman(secret_word)
 
 ###############
 
