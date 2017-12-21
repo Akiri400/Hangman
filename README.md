@@ -1,4 +1,3 @@
-# hello-world
-Just another repository
+This repository includes files required for the Hangman game
 
-When is FF7 coming out... seriously.
+INSTRUCTIONS*** TO BE INCLUDED
