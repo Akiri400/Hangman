@@ -143,34 +143,44 @@ def hangman(secret_word):
     Follows the other limitations detailed in the problem write-up.
     '''
 
-
+    warning = 3
     letters_guessed = []
     n_letters = len(secret_word)
     n_guesses = 6
     print("Welcome to the game Hangman!")
-    # print("I am thinking of a word that is " + str(n_letters) + " letters long.")
-    # print(get_guessed_word(secret_word, letters_guessed))
-    # letters_list = list(input("Guess a letter: "))
-    # letters_guessed += letters_list
-    print("You have", n_guesses, "guesses")
+    print("I am thinking of a word that is " + str(n_letters) + " letters long.")
+    print("-----------")
     for x in range(n_guesses):
+        print("You have", warning, "warnings left.")
+        print("You have", n_guesses-x, "guesses left.")
+        print("Available letters: ", get_available_letters(letters_guessed))
+        one_letter = (input("Please guess a letter: "))
+        lower_one_letter = str.lower(one_letter)
+        while str.isalpha(lower_one_letter) == False:
+                warning -= 1
+                if warning < 0:
+                    n_guesses -= 1
+                if warning >= 0:
+                    {
+                    print("Oops! That is not a valid letter. You have", warning, "warnings left:",
+                        get_guessed_word(secret_word, letters_guessed))
+                    }
+                else:
+                    print("Oops! That is not a valid letter. You lost a guess!")
+                    print("You have", n_guesses-x, "guesses left:", get_guessed_word(secret_word, letters_guessed))
+                one_letter = (input("Please guess a letter: "))
+                lower_one_letter = str.lower(one_letter)
+        letters_guessed += list(lower_one_letter)
+        str_one_letter = "".join(lower_one_letter)
+        if str_one_letter in secret_word:
+            print("Good guess: ", get_guessed_word(secret_word, letters_guessed))
+        else:
+            print("Oops! That letter is not in my word: ", get_guessed_word(secret_word, letters_guessed))
+        print("-----------")
 
-        print("I am thinking of a word that is " + str(n_letters) + " letters long.")  # works
-
-        letters_list = list(input("Guess a letter: "))
-        letters_guessed += letters_list  # lists can be added together
-
-        print(get_guessed_word(secret_word, letters_guessed))  # works
-
-        print("You have " + str(n_guesses-x-1) + " guesses left.")
-
-        print("Available letters: ", get_available_letters(letters_guessed))  # works
-
-        print("------")
-
-        if is_word_guessed(secret_word, letters_guessed) == True:
-            print("You Win! The Answer is: ", secret_word)
-            break
+        # if is_word_guessed(secret_word, letters_guessed) == True:
+        #     print("You Win! The Answer is: ", secret_word)
+        #     break
 
     print("The right answer was: ", secret_word)
 
@@ -259,8 +269,8 @@ if __name__ == "__main__":
     # To test part 2, comment out the pass line above and
     # uncomment the following two lines.
 
-    secret_word = choose_word(wordlist)
-    #hangman(secret_word)
+    # secret_word = choose_word(wordlist)
+    hangman("apple")
 
 ###############
 
