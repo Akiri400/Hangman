@@ -153,12 +153,15 @@ def hangman(secret_word):
     for x in range(n_guesses):
         if n_guesses <= 0:
             break
-
+        if is_word_guessed(secret_word, letters_guessed) == True:
+            print("Well done, you WON!")
+            break
         print("You have", warning, "warnings left.")
         print("You have", n_guesses-x, "guesses left.")
         print("Available letters: ", get_available_letters(letters_guessed))
         one_letter = (input("Please guess a letter: "))
         lower_one_letter = str.lower(one_letter)
+
 
         # IF THE GUESS HAS ALREADY BEEN GUESSED BEFORE
         while lower_one_letter in letters_guessed:
@@ -180,6 +183,20 @@ def hangman(secret_word):
                     break
             one_letter = (input("Please guess a letter: "))
             lower_one_letter = str.lower(one_letter)
+
+        # IF GUESS IS NEW AND CORRECT
+        while (lower_one_letter not in letters_guessed) and (lower_one_letter in secret_word):
+            letters_guessed += list(lower_one_letter)
+            print("Good guess: ", get_guessed_word(secret_word, letters_guessed))
+            print("-----------")
+            if is_word_guessed(secret_word, letters_guessed) == True:
+                break
+            print("You have", warning, "warnings left.")
+            print("You have", n_guesses - x, "guesses left.")
+            print("Available letters: ", get_available_letters(letters_guessed))
+            one_letter = (input("Please guess a letter: "))
+            lower_one_letter = str.lower(one_letter)
+
 
         # IF THE GUESS IS NOT A VALID CHARACTER (NOT A UPPER OR LOWERCASE ALPHABET CHAR)
         while str.isalpha(lower_one_letter) == False:
@@ -206,18 +223,14 @@ def hangman(secret_word):
                 lower_one_letter = str.lower(one_letter)
 
         letters_guessed += list(lower_one_letter)
-        str_one_letter = "".join(lower_one_letter)
-        if str_one_letter in secret_word:
-            print("Good guess: ", get_guessed_word(secret_word, letters_guessed))
-        else:
-            print("Oops! That letter is not in my word: ", get_guessed_word(secret_word, letters_guessed))
+        if is_word_guessed(secret_word, letters_guessed) == True:
+            print("Well done, you WON!")
+            break
+        print("Oops! That letter is not in my word: ", get_guessed_word(secret_word, letters_guessed))
         print("-----------")
 
-        # if is_word_guessed(secret_word, letters_guessed) == True:
-        #     print("You Win! The Answer is: ", secret_word)
-        #     break
-
-    print("The right answer was: ", secret_word)
+    if is_word_guessed(secret_word, letters_guessed) == False:
+        print("The right answer was: ", secret_word)
 
 
 
@@ -304,8 +317,8 @@ if __name__ == "__main__":
     # To test part 2, comment out the pass line above and
     # uncomment the following two lines.
 
-    secret_word = choose_word(wordlist)
-    hangman(secret_word)
+    # secret_word = choose_word(wordlist)
+    hangman("apple")
 
 ###############
 
