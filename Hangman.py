@@ -183,6 +183,8 @@ def hangman(secret_word):
             one_letter = (input("Please guess a letter: "))
             lower_one_letter = str.lower(one_letter)
 
+        if is_word_guessed(secret_word, letters_guessed) == True:
+            break
         # IF THE GUESS HAS ALREADY BEEN GUESSED BEFORE
         while lower_one_letter in letters_guessed and lower_one_letter in string.ascii_lowercase:
             warning -= 1
@@ -222,7 +224,10 @@ def hangman(secret_word):
 
         # TEST IF USER HAS GUESSED THE WORD CORRECTLY
         if is_word_guessed(secret_word, letters_guessed) == True:
-            print("Well done, you WON!")
+            print("Congratulations, you won!")
+            remaining_guesses = int(n_guesses-x-v)
+            score = remaining_guesses * len(secret_word)
+            print("Your total score for this game is:", score)
             break
 
         # IF THE USER HAS MADE A VALID INCORRECT GUESS
@@ -234,9 +239,14 @@ def hangman(secret_word):
 
     # REVEALS SECRET WORD IF USER HAS USED UP ALL GUESSES
     if is_word_guessed(secret_word, letters_guessed) == False:
-        print("The right answer was: ", secret_word)
+        print("You Lose! The right answer was: ", secret_word)
 
-
+    # TEST IF USER HAS GUESSED THE WORD CORRECTLY
+    if is_word_guessed(secret_word, letters_guessed) == True:
+        print("Congratulations, you won!")
+        remaining_guesses = int(n_guesses - x - v)
+        score = remaining_guesses * len(secret_word)
+        print("Your total score for this game is:", score)
 
 # When you've completed your hangman function, scroll down to the bottom
 # of the file and uncomment the first two lines to test
@@ -321,8 +331,8 @@ if __name__ == "__main__":
     # To test part 2, comment out the pass line above and
     # uncomment the following two lines.
 
-    secret_word = choose_word(wordlist)
-    hangman(secret_word)
+    # secret_word = choose_word(wordlist)
+    hangman("apple")
 
 ###############
 
