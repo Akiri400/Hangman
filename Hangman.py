@@ -142,7 +142,8 @@ def hangman(secret_word):
 
     Follows the other limitations detailed in the problem write-up.
     '''
-
+    v = 0
+    vowel = "aeiou"
     warning = 3
     letters_guessed = []
     n_letters = len(secret_word)
@@ -152,7 +153,7 @@ def hangman(secret_word):
     print("-----------")
     for x in range(n_guesses):
         z = 0
-        if n_guesses <= 0:
+        if int(n_guesses-x-v) < 1:
             break
         if is_word_guessed(secret_word, letters_guessed) == True:
             print("Well done, you WON!")
@@ -161,7 +162,7 @@ def hangman(secret_word):
             print("You have no more warnings")
         else:
             print("You have", warning, "warnings left.")
-        print("You have", n_guesses-x, "guesses left.")
+        print("You have", n_guesses-x-v, "guesses left.")
         print("Available letters: ", get_available_letters(letters_guessed))
         one_letter = (input("Please guess a letter: "))
         lower_one_letter = str.lower(one_letter)
@@ -177,7 +178,7 @@ def hangman(secret_word):
                 print("You have no more warnings")
             else:
                 print("You have", warning, "warnings left.")
-            print("You have", n_guesses-x, "guesses left.")
+            print("You have", n_guesses-x-v, "guesses left.")
             print("Available letters: ", get_available_letters(letters_guessed))
             one_letter = (input("Please guess a letter: "))
             lower_one_letter = str.lower(one_letter)
@@ -226,6 +227,8 @@ def hangman(secret_word):
 
         # IF THE USER HAS MADE A VALID INCORRECT GUESS
         if lower_one_letter not in secret_word and lower_one_letter in string.ascii_lowercase and z == 0:
+            if lower_one_letter in vowel:
+                v += 1
             print("Oops! That letter is not in my word: ", get_guessed_word(secret_word, letters_guessed))
         print("-----------")
 
