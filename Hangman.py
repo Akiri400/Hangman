@@ -151,38 +151,20 @@ def hangman(secret_word):
     print("I am thinking of a word that is " + str(n_letters) + " letters long.")
     print("-----------")
     for x in range(n_guesses):
+        z = 0
         if n_guesses <= 0:
             break
         if is_word_guessed(secret_word, letters_guessed) == True:
             print("Well done, you WON!")
             break
-        print("You have", warning, "warnings left.")
+        if warning < 0:
+            print("You have no more warnings")
+        else:
+            print("You have", warning, "warnings left.")
         print("You have", n_guesses-x, "guesses left.")
         print("Available letters: ", get_available_letters(letters_guessed))
         one_letter = (input("Please guess a letter: "))
         lower_one_letter = str.lower(one_letter)
-
-
-        # IF THE GUESS HAS ALREADY BEEN GUESSED BEFORE
-        while lower_one_letter in letters_guessed:
-            warning -= 1
-            if warning < 0:
-                {
-                    print("Oops! You have already guessed this letter. You have lost a guess:",
-                          get_guessed_word(secret_word, letters_guessed))
-                }
-                break
-
-            if warning >= 0:
-                {
-                    print("Oops! You have already guessed this letter. You have", warning, "warnings left:",
-                          get_guessed_word(secret_word, letters_guessed))
-                }
-            else:
-                if n_guesses <= 0:
-                    break
-            one_letter = (input("Please guess a letter: "))
-            lower_one_letter = str.lower(one_letter)
 
         # IF GUESS IS NEW AND CORRECT
         while (lower_one_letter not in letters_guessed) and (lower_one_letter in secret_word):
@@ -191,12 +173,32 @@ def hangman(secret_word):
             print("-----------")
             if is_word_guessed(secret_word, letters_guessed) == True:
                 break
-            print("You have", warning, "warnings left.")
-            print("You have", n_guesses - x, "guesses left.")
+            if warning < 0:
+                print("You have no more warnings")
+            else:
+                print("You have", warning, "warnings left.")
+            print("You have", n_guesses-x, "guesses left.")
             print("Available letters: ", get_available_letters(letters_guessed))
             one_letter = (input("Please guess a letter: "))
             lower_one_letter = str.lower(one_letter)
 
+        # IF THE GUESS HAS ALREADY BEEN GUESSED BEFORE
+        while lower_one_letter in letters_guessed and lower_one_letter in string.ascii_lowercase:
+            warning -= 1
+            if warning < 0:
+                {
+                    print("Oops! You have already guessed this letter. You have lost a guess:",
+                            get_guessed_word(secret_word, letters_guessed))
+                }
+                z = 1
+                break
+            if warning >= 0:
+                {
+                    print("Oops! You have already guessed this letter. You have", warning, "warnings left:",
+                            get_guessed_word(secret_word, letters_guessed))
+                }
+            one_letter = (input("Please guess a letter: "))
+            lower_one_letter = str.lower(one_letter)
 
         # IF THE GUESS IS NOT A VALID CHARACTER (NOT A UPPER OR LOWERCASE ALPHABET CHAR)
         while str.isalpha(lower_one_letter) == False:
@@ -207,28 +209,27 @@ def hangman(secret_word):
                           get_guessed_word(secret_word, letters_guessed))
                     }
                     break
-
                 if warning >= 0:
                     {
                     print("Oops! That is not a valid letter. You have", warning, "warnings left:",
                         get_guessed_word(secret_word, letters_guessed))
                     }
-                else:
-                    if n_guesses <= 0:
-                        break
-                    print("Oops! That is not a valid letter. You lost a guess!")
-                    print("You have", n_guesses-x, "guesses left:", get_guessed_word(secret_word, letters_guessed))
-
                 one_letter = (input("Please guess a letter: "))
                 lower_one_letter = str.lower(one_letter)
 
         letters_guessed += list(lower_one_letter)
+
+        # TEST IF USER HAS GUESSED THE WORD CORRECTLY
         if is_word_guessed(secret_word, letters_guessed) == True:
             print("Well done, you WON!")
             break
-        print("Oops! That letter is not in my word: ", get_guessed_word(secret_word, letters_guessed))
+
+        # IF THE USER HAS MADE A VALID INCORRECT GUESS
+        if lower_one_letter not in secret_word and lower_one_letter in string.ascii_lowercase and z == 0:
+            print("Oops! That letter is not in my word: ", get_guessed_word(secret_word, letters_guessed))
         print("-----------")
 
+    # REVEALS SECRET WORD IF USER HAS USED UP ALL GUESSES
     if is_word_guessed(secret_word, letters_guessed) == False:
         print("The right answer was: ", secret_word)
 
@@ -317,8 +318,8 @@ if __name__ == "__main__":
     # To test part 2, comment out the pass line above and
     # uncomment the following two lines.
 
-    # secret_word = choose_word(wordlist)
-    hangman("apple")
+    secret_word = choose_word(wordlist)
+    hangman(secret_word)
 
 ###############
 
